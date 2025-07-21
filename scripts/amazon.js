@@ -1,4 +1,4 @@
-import { cart, addToCart, calculateCartQuantity} from '../data/cart.js';
+import { addToCart, calculateCartQuantity} from '../data/cart.js';
 import { products } from '../data/products.js';
 import { formatCurrency } from "./utils/money.js";
 
@@ -100,7 +100,11 @@ document.querySelectorAll('.js-add-to-cart')
 
       const { productId } = button.dataset
 
-      addToCart(productId);
+      const quantitySelector = document.querySelector(`.js-product-selector-${productId}`)
+
+      const quantity = Number(quantitySelector.value)
+
+      addToCart(productId, quantity);
       updateCartQuantity();
       revealAdded(productId);      
     }) 
