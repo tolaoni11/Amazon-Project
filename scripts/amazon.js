@@ -1,9 +1,9 @@
-import { addToCart, calculateCartQuantity} from '../data/cart.js';
-import { products } from '../data/products.js';
+import { addToCart, calculateCartQuantity } from "../data/cart.js";
+import { products } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
 
 //data Sturture
-let productsHTML = ''
+let productsHTML = "";
 
 products.forEach((product) => {
   productsHTML += `
@@ -19,14 +19,14 @@ products.forEach((product) => {
 
           <div class="product-rating-container">
             <img class="product-rating-stars"
-              src="images/ratings/rating-${product.rating.stars * 10}.png">
+              src=${product.getStarsUrl()}>
             <div class="product-rating-count link-primary">
               ${product.rating.count}
             </div>
           </div>
 
           <div class="product-price">
-            $${formatCurrency(product.priceCents)}
+            ${product.getPrice()}
           </div>
 
           <div class="product-quantity-container">
@@ -56,56 +56,52 @@ products.forEach((product) => {
             Add to Cart
           </button>
         </div>  
-  `
-})
+  `;
+});
 
-
-document.querySelector('.js-products-grid')
-  .innerHTML = productsHTML;
-
-
+document.querySelector(".js-products-grid").innerHTML = productsHTML;
 
 const addedMessageTimeouts = {};
 
 function updateCartQuantity() {
   const cartQuantity = calculateCartQuantity();
 
-  document.querySelector('.js-cart-quantity')
-    .innerHTML = cartQuantity;
+  document.querySelector(".js-cart-quantity").innerHTML = cartQuantity;
 }
 
 updateCartQuantity();
 
 function revealAdded(productId) {
-  const addedMessage = document.querySelector(`.js-added-to-cart-${productId}`)
-      
-      addedMessage.classList.add('active')
+  const addedMessage = document.querySelector(`.js-added-to-cart-${productId}`);
 
-      const prevTimeOutId = addedMessageTimeouts[productId];
-      if (prevTimeOutId) {
-        clearTimeout(prevTimeOutId)
-      }
-      
-      const timeoutid = setTimeout(() => {
-        addedMessage.classList.remove('active');
-      },2000)
+  addedMessage.classList.add("active");
 
-      addedMessageTimeouts[productId] = timeoutid;
+  const prevTimeOutId = addedMessageTimeouts[productId];
+  if (prevTimeOutId) {
+    clearTimeout(prevTimeOutId);
+  }
+
+  const timeoutid = setTimeout(() => {
+    addedMessage.classList.remove("active");
+  }, 2000);
+
+  addedMessageTimeouts[productId] = timeoutid;
 }
 
-document.querySelectorAll('.js-add-to-cart')
-  .forEach((button) => {
-    button.addEventListener('click', () => {
-      //const productId = button.dataset.productId
+document.querySelectorAll(".js-add-to-cart").forEach((button) => {
+  button.addEventListener("click", () => {
+    //const productId = button.dataset.productId
 
-      const { productId } = button.dataset
+    const { productId } = button.dataset;
 
-      const quantitySelector = document.querySelector(`.js-product-selector-${productId}`)
+    const quantitySelector = document.querySelector(
+      `.js-product-selector-${productId}`
+    );
 
-      const quantity = Number(quantitySelector.value)
+    const quantity = Number(quantitySelector.value);
 
-      addToCart(productId, quantity);
-      updateCartQuantity();
-      revealAdded(productId);      
-    }) 
-  })
+    addToCart(productId, quantity);
+    updateCartQuantity();
+    revealAdded(productId);
+  });
+});
