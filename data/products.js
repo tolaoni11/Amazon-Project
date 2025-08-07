@@ -58,6 +58,28 @@ class Clothing extends Product {
   }
 }
 
+class Appliance extends Product {
+  instructionLink;
+  warrantyLink;
+
+  constructor(productDetails) {
+    super(productDetails);
+    this.instructionLink = productDetails.instructionLink;
+    this.warrantyLink = productDetails.warrantyLink;
+  }
+
+  extraInfoHTML() {
+    // super.extraInfoHTML()
+    return `
+    <a href="${this.instructionLink}" target="_blank">
+      Instructions
+    </a>
+    <a href="${this.warrantyLink}" target="_blank">
+      Warranty
+    </a>
+    `;
+  }
+}
 // const date = new Date();
 // console.log(date);
 // console.log(date.toLocaleTimeString());
@@ -119,6 +141,9 @@ export const products = [
       count: 2197,
     },
     priceCents: 1899,
+    type: "appliances",
+    instructionLink: "images/appliance-instructions.png",
+    warrantyLink: "images/appliance-warranty.png",
     keywords: ["toaster", "kitchen", "appliances"],
   },
   {
@@ -253,6 +278,9 @@ export const products = [
       count: 846,
     },
     priceCents: 3074,
+    type: "appliances",
+    instructionLink: "images/appliance-instructions.png",
+    warrantyLink: "images/appliance-warranty.png",
     keywords: ["water boiler", "appliances", "kitchen"],
   },
   {
@@ -345,6 +373,9 @@ export const products = [
       count: 2286,
     },
     priceCents: 8300,
+    type: "appliances",
+    instructionLink: "images/appliance-instructions.png",
+    warrantyLink: "images/appliance-warranty.png",
     keywords: ["garbage", "bins", "cans", "kitchen"],
   },
   {
@@ -559,6 +590,8 @@ export const products = [
 ].map((productDetails) => {
   if (productDetails.type === "clothing") {
     return new Clothing(productDetails);
+  } else if (productDetails.type === "appliances") {
+    return new Appliance(productDetails);
   }
   return new Product(productDetails);
 });
